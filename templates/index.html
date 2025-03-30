@@ -1,0 +1,63 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sesli Görüşme</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      #status {
+        margin-top: 1rem;
+        font-size: 1.2rem;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔐 Sesli Giriş</h1>
+    <button id="recordBtn">Şifreyi Söyle</button>
+    <div id="status">Hazır bekliyor...</div>
+
+    <script>
+      const recordBtn = document.getElementById("recordBtn");
+      const statusDiv = document.getElementById("status");
+
+      recordBtn.addEventListener("click", async () => {
+        statusDiv.textContent = "📱 ESP32'ye istek gönderiliyor...";
+
+        try {
+          const response = await fetch("http://192.168.141.121/start-record");
+          const result = await response.text();
+
+          if (result === "OK") {
+            statusDiv.textContent = "✅ Giriş Onaylandı";
+            setTimeout(() => {
+              window.location.href = "/home";
+            }, 1500);
+          } else if (result === "DENIED") {
+            statusDiv.textContent = "❌ Şifre Hatalı";
+            setTimeout(() => {
+              window.location.href = "/error";
+            }, 1500);
+          } else {
+            statusDiv.textContent = "⚠️ ESP32 cevap vermedi";
+          }
+        } catch (err) {
+          statusDiv.textContent = "❌ ESP32 bağlantı hatası";
+        }
+      });
+    </script>
+  </body>
+</html>
