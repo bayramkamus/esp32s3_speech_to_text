@@ -50,13 +50,6 @@ def serve_audio_file(filename):
 def index():
     return render_template("index.html")
 
-@app.route("/home")
-def home():
-    return "<h1>🎉 Giriş başarılı!</h1><p>Hoş geldiniz!</p>"
-
-@app.route("/error")
-def error():
-    return "<h1>❌ Hatalı şifre</h1><a href='/'>Geri dön</a>"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

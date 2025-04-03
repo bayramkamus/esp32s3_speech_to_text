@@ -1,10 +1,9 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="tr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sesli Görüşme</title>
+    <title>Sesli Giriş</title>
     <style>
       body {
         font-family: sans-serif;
@@ -13,6 +12,7 @@
         align-items: center;
         justify-content: center;
         height: 100vh;
+        text-align: center;
       }
       #status {
         margin-top: 1rem;
@@ -23,6 +23,10 @@
         font-size: 1rem;
         cursor: pointer;
       }
+      #resultMessage {
+        display: none;
+        margin-top: 2rem;
+      }
     </style>
   </head>
   <body>
@@ -30,12 +34,17 @@
     <button id="recordBtn">Şifreyi Söyle</button>
     <div id="status">Hazır bekliyor...</div>
 
+    <!-- Başarı ve hata mesajları burada gösterilecek -->
+    <div id="resultMessage"></div>
+
     <script>
       const recordBtn = document.getElementById("recordBtn");
       const statusDiv = document.getElementById("status");
+      const resultDiv = document.getElementById("resultMessage");
 
       recordBtn.addEventListener("click", async () => {
         statusDiv.textContent = "📱 ESP32'ye istek gönderiliyor...";
+        resultDiv.style.display = "none";
 
         try {
           const response = await fetch("http://192.168.141.121/start-record");
@@ -44,12 +53,15 @@
           if (result === "OK") {
             statusDiv.textContent = "✅ Giriş Onaylandı";
             setTimeout(() => {
-              window.location.href = "/home";
+              showResult("🎉 Giriş başarılı!<br>Hoş geldiniz!", "green");
             }, 1500);
           } else if (result === "DENIED") {
             statusDiv.textContent = "❌ Şifre Hatalı";
             setTimeout(() => {
-              window.location.href = "/error";
+              showResult(
+                "❌ Hatalı şifre<br><a href='#' onclick='resetPage()'>Geri dön</a>",
+                "red"
+              );
             }, 1500);
           } else {
             statusDiv.textContent = "⚠️ ESP32 cevap vermedi";
@@ -58,6 +70,17 @@
           statusDiv.textContent = "❌ ESP32 bağlantı hatası";
         }
       });
+
+      function showResult(message, color) {
+        resultDiv.innerHTML = `<h2 style="color:${color}">${message}</h2>`;
+        resultDiv.style.display = "block";
+        document.getElementById("recordBtn").style.display = "none";
+        statusDiv.style.display = "none";
+      }
+
+      function resetPage() {
+        location.reload();
+      }
     </script>
   </body>
 </html>

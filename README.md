@@ -16,7 +16,7 @@ A complete voice-activated password recognition system using the ESP32-S3 microc
 ## 🧩 Components
 
 - ESP32-S3 microcontroller
-- Onboard or external microphone
+- inmp441 microphone
 - Wi-Fi network
 - Flask server (Python)
 - HTML frontend for user feedback
@@ -28,15 +28,11 @@ A complete voice-activated password recognition system using the ESP32-S3 microc
 ```
 esp32s3_voice_password/
 ├── main/
-│   ├── app_main.c
-│   ├── speech_recognition.c
-│   ├── wifi_config.c
-├── flask_server/
-│   ├── app.py
-│   ├── templates/
-│   │   └── index.html
-├── data/
-│   └── recognized.txt
+│   ├── main.c
+│
+├── templates/
+│   ├── index.html
+├── app.py
 ├── sdkconfig
 ├── README.md
 ```
@@ -50,12 +46,11 @@ esp32s3_voice_password/
 1. Clone the project:
 
    ```bash
-   git clone https://github.com/yourusername/esp32s3_voice_password.git
-   cd esp32s3_voice_password
+   git clone https://github.com/bayramkamus/esp32s3_speech_to_text.git
+   cd esp32s3_speech_to_text
    ```
 
 2. Configure Wi-Fi:
-   In `wifi_config.c`, set:
 
    ```c
    #define WIFI_SSID "YOUR_WIFI_SSID"
@@ -79,10 +74,10 @@ esp32s3_voice_password/
 
 ### Flask Server (Python)
 
-1. Navigate to `flask_server` folder:
+1. Navigate to `esp32s3_speech_to_text` folder:
 
    ```bash
-   cd flask_server
+   cd esp32s3_speech_to_text
    ```
 
 2. Install dependencies:
@@ -135,13 +130,3 @@ Access Status: ❌ Access Denied
 - Ensure ESP32-S3 has stable power supply and working microphone.
 - Both ESP32 and Flask server must be on the same network.
 - Modify password logic in `app.py` as needed.
-
----
-
-🧠 **Future Ideas**
-
-- Use HTTPS for secure communication
-- Add multiple user profiles and passwords
-- Integrate with smart door lock or home automation
-- Add audio feedback (buzzer or speaker)
-- Log access history with timestamps
